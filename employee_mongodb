@@ -1,0 +1,113 @@
+// MongoDB Schema with Validation
+
+db.createCollection("employees", {
+   validator: {
+      $jsonSchema: {
+         bsonType: "object",
+         required: ["firstName", "lastName", "dob", "employeeStatus", "employeeType"],
+         properties: {
+            firstName: {
+               bsonType: "string",
+               description: "must be a string and is required"
+            },
+            lastName: {
+               bsonType: "string",
+               description: "must be a string and is required"
+            },
+            dob: {
+               bsonType: "date",
+               description: "must be a date and is required"
+            },
+            genderCode: {
+               enum: ["M", "F", "NB", "O"],
+               description: "can only be one of the enum values"
+            },
+            employeeStatus: {
+               enum: ["Active", "Terminated", "LOA", "Suspended"],
+               description: "can only be one of the enum values and is required"
+            },
+            currentEmployeeRating: {
+               bsonType: "int",
+               minimum: 1,
+               maximum: 5,
+               description: "must be an integer between 1 and 5"
+            },
+            adEmail: {
+               bsonType: "string",
+               pattern: "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$",
+               description: "must be a valid email address"
+            }
+         }
+      }
+   }
+});
+
+db.createCollection("jobs", {
+   validator: {
+      $jsonSchema: {
+         bsonType: "object",
+         required: ["empId", "departmentId", "title", "startDate"],
+         properties: {
+            empId: {
+               bsonType: "objectId",
+               description: "must be an ObjectId and is required"
+            },
+            departmentId: {
+               bsonType: "objectId",
+               description: "must be an ObjectId and is required"
+            },
+            title: {
+               bsonType: "string",
+               description: "must be a string and is required"
+            },
+            startDate: {
+               bsonType: "date",
+               description: "must be a date and is required"
+            },
+            exitDate: {
+               bsonType: "date",
+               description: "must be a date if present"
+            }
+         }
+      }
+   }
+});
+
+db.createCollection("departments", {
+   validator: {
+      $jsonSchema: {
+         bsonType: "object",
+         required: ["division", "businessUnit", "departmentType", "locationCode"],
+         properties: {
+            division: {
+               bsonType: "string",
+               description: "must be a string and is required"
+            },
+            businessUnit: {
+               bsonType: "string",
+               description: "must be a string and is required"
+            },
+            departmentType: {
+               bsonType: "string",
+               description: "must be a string and is required"
+            },
+            locationCode: {
+               bsonType: "int",
+               description: "must be an integer and is required"
+            }
+         }
+      }
+   }
+});
+
+// Create indexes
+db.employees.createIndex({ "employeeStatus": 1 });
+db.employees.createIndex({ "employeeType": 1 });
+db.employees.createIndex({ "adEmail": 1 }, { unique: true });
+db.jobs.createIndex({ "startDate": 1, "exitDate": 1 });
+db.departments.createIndex({ "locationCode": 1 });
+db.departments.createIndex({ 
+    "division": 1, 
+    "businessUnit": 1, 
+    "locationCode": 1 
+}, { unique: true });
