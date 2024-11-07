@@ -48,3 +48,5 @@ CREATE TABLE Project_Team_Members (
     FOREIGN KEY (TeamMemberID) REFERENCES Team_Members(TeamMemberID),
     FOREIGN KEY (RoleID) REFERENCES Roles(RoleID)
 );
+/*-- 7. Tasks Table
+// Path%20Company.sql*/
