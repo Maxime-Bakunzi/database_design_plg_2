@@ -1,0 +1,35 @@
+{
+  "Employees": {
+    "_id": "ObjectId",
+    "EmpID": "Integer",
+    "FirstName": "String",
+    "LastName": "String",
+    "DOB": "Date",
+    "GenderCode": "String",
+    "RaceDesc": "String",
+    "MaritalDesc": "String",
+    "EmployeeStatus": "String",
+    "EmployeeType": "String",
+    "CurrentEmployeeRating": "Integer"
+  },
+  "Jobs": {
+    "_id": "ObjectId",
+    "JobID": "Integer",
+    "EmpID": "Integer",
+    "Title": "String",
+    "Supervisor": "String",
+    "StartDate": "Date",
+    "ExitDate": "Date",
+    "PayZone": "String",
+    "JobFunctionDescription": "String",
+    "PerformanceScore": "String"
+  },
+  "Departments": {
+    "_id": "ObjectId",
+    "DepartmentID": "Integer",
+    "Division": "String",
+    "BusinessUnit": "String",
+    "DepartmentType": "String",
+    "LocationCode": "Integer"
+  }
+}
