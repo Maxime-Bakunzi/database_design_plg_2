@@ -13,3 +13,70 @@ engine = create_engine(DATABASE_URL, echo=True)
 SessionLocal = sessionmaker(autocommit=False,
 autoflush=False, bind=engine)
 Base = declarative_base()
+
+# FastAPI instance
+app = FastAPI()
+
+# SQLAlchemy Models
+class Employee(Base):__tablename__ = "employees"
+empid = Column(Integer, primary_key=True)
+firstname = Column(String)
+lastname = Column(String)
+dob = Column(Date)
+gendercode = Column(String)
+racedesc = Column(String)
+maritaldesc = Column(String)
+employeestatus = Column(String)
+employeetype = Column(String)
+currentemployeerating = Column(Integer)
+
+
+class Job(Base):__tablename__ = "jobs"
+jobid = Column(Integer, primary_key=True,
+autoincrement=True)
+empid = Column(Integer,
+ForeignKey("employees.empid"))
+title = Column(String)
+supervisor = Column(String)
+startdate = Column(Date)
+exitdate = Column(Date)
+payzone = Column(String)
+jobfunctiondescription = Column(String)
+performancescore = Column(String)
+employee = relationship("Employee",
+back_populates="jobs")
+
+
+class Department(Base):__tablename__ = "departments"
+departmentid = Column(Integer,
+primary_key=True, autoincrement=True)
+division = Column(String)
+businessunit = Column(String)
+departmenttype = Column(String)
+locationcode = Column(Integer)
+
+Employee.jobs = relationship("Job",
+back_populates="employee")
+
+# Pydantic Models for Request and Response
+class EmployeeBase(BaseModel):firstname: str
+lastname: str
+dob: date # Changed from str to date
+gendercode: str
+racedesc: str
+maritaldesc: str
+employeestatus: str
+employeetype: str
+currentemployeerating: int
+
+class Config:from_attributes = True # Enable ORM mode
+json_encoders = {
+date: lambda v: v.isoformat() #Properly serialize date objects
+}
+
+
+class EmployeeCreate(EmployeeBase):pass
+class EmployeeDetail(EmployeeBase):empid: int
+
+
+
