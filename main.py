@@ -79,3 +79,60 @@ class EmployeeCreate(EmployeeBase):pass
 class EmployeeDetail(EmployeeBase):empid: int
 
 
+# Database Dependency
+def get_db():
+   db = SessionLocal()
+   try:
+      yield db
+   finally:
+      b.close()
+      
+# CRUD Operations
+
+
+@app.post("/employees/", response_model=EmployeeDetail)
+def create_employee(employee: EmployeeCreate, db: Session = Depends(get_db)):
+    db_employee = Employee(**employee.dict())
+    db.add(db_employee)
+    db.commit()
+    db.refresh(db_employee)
+    return db_employee
+
+
+@app.get("/employees/latest", response_model=EmployeeDetail)
+def get_latest_employee(db: Session = Depends(get_db)):
+    latest_employee = db.query(Employee).order_by(
+        Employee.empid.desc()).first()
+    if latest_employee is None:
+        raise HTTPException(status_code=404, detail="No employees found")
+    return latest_employee
+
+
+@app.get("/employees/{empid}", response_model=EmployeeDetail)
+def read_employee(empid: int, db: Session = Depends(get_db)):
+    db_employee = db.query(Employee).filter(Employee.empid == empid).first()
+    if db_employee is None:
+        raise HTTPException(status_code=404, detail="Employee not found")
+    return db_employee
+
+
+@app.put("/employees/{empid}", response_model=EmployeeDetail)
+def update_employee(empid: int, employee: EmployeeCreate, db: Session = Depends(get_db)):
+    db_employee = db.query(Employee).filter(Employee.empid == empid).first()
+    if db_employee is None:
+        raise HTTPException(status_code=404, detail="Employee not found")
+    for field, value in employee.dict().items():
+        setattr(db_employee, field, value)
+    db.commit()
+    db.refresh(db_employee)
+    return db_employee
+
+
+@app.delete("/employees/{empid}")
+def delete_employee(empid: int, db: Session = Depends(get_db)):
+    db_employee = db.query(Employee).filter(Employee.empid == empid).first()
+    if db_employee is None:
+        raise HTTPException(status_code=404, detail="Employee not found")
+    db.delete(db_employee)
+    db.commit()
+    return {"message": "Employee deleted successfully"}
