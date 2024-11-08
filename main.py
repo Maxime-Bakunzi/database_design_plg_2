@@ -79,4 +79,3 @@ class EmployeeCreate(EmployeeBase):pass
 class EmployeeDetail(EmployeeBase):empid: int
 
 
-
