@@ -15,6 +15,8 @@ This project involves creating a comprehensive database system using both SQL an
 - [Installation](#installation)
 - [Usage](#usage)
 - [Contributors](#contributors)
+- [Benefits](#Benefits)
+- [Challenges](#Challenges)
 
 ---
 
@@ -118,3 +120,55 @@ python fetch_and_predict.py
 - **Maxime Guy Bakunzi** - SQL and NoSQL Database Implementation
 - **Prince Ndanyuzwe** - API Development
 - **Alhassan Dumbuya** - Data Fetching and Prediction Script
+
+## **Benefits**
+
+1. **Collaborative Skill Development**:
+   - Working together allowed us to leverage each team member's strengths and learn from each other's expertise in different areas (database design, API development, etc.).
+   - We gained hands-on experience with SQL and NoSQL databases, enhancing our technical skills and understanding of database management.
+
+2. **Clear Task Division**:
+   - Assigning specific tasks (schema design, SQL/MongoDB implementation, API development, etc.) to each member streamlined the workflow and enabled us to work efficiently.
+   - This division helped each member focus on a particular aspect of the project, improving our productivity and accountability.
+
+3. **Enhanced Understanding of Database Normalization**:
+   - Designing a normalized schema for SQL databases helped us grasp normalization principles, particularly in creating primary and foreign key relationships, which improved the database’s efficiency and reduced data redundancy.
+
+4. **Experience with API Development for CRUD Operations**:
+   - Developing APIs for create, read, update, and delete operations using FastAPI was beneficial, especially for integrating our database with external systems or applications.
+   - This task provided valuable practice in creating RESTful endpoints, handling requests, and error management.
+
+5. **Improved Prediction Workflow**:
+   - Creating a script to fetch data from an API, prepare it, and make predictions added a practical element, allowing us to implement a real-world workflow of data integration and prediction.
+
+---
+
+## **Challenges**
+
+1. **Dataset Complexity and Cleaning**:
+   - Preparing the raw dataset for database insertion was more time-consuming than expected. Issues such as inconsistent data types, missing values, and redundant information required extensive preprocessing.
+   - Matching data types between our dataset and database schema (e.g., date formats, numeric types) often led to errors during data insertion.
+
+2. **Database Hosting and Configuration**:
+   - Hosting the database online was challenging, especially configuring access controls and permissions for team members to interact with the hosted database.
+   - Ensuring consistent connections across environments and managing IP whitelisting and security policies added complexity to the hosting process.
+
+3. **Schema Design for Both SQL and NoSQL**:
+   - Designing a normalized SQL schema was challenging, particularly in determining the right number of tables and defining relationships between them.
+   - Converting the relational schema into MongoDB collections required rethinking data structure without foreign keys, adapting to MongoDB’s flexibility while maintaining data integrity.
+
+4. **Time-Consuming Data Insertion Process**:
+   - Inserting large datasets into the database was slow, especially for SQL where complex queries were needed to maintain referential integrity.
+   - Handling unique identifiers such as employee IDs, job IDs, and department IDs required special care to avoid conflicts, which sometimes led to delays and debugging issues.
+
+5. **Consistency Between Model Training and Prediction**:
+   - Ensuring that the features used during model training aligned with the data fetched for prediction was tricky. Label encoding, for instance, required careful management to avoid mismatches in categories.
+   - Additionally, we faced challenges ensuring the API-delivered data was in a format that the model could directly process.
+
+6. **Technical Challenges with API Development**:
+   - Setting up API endpoints with proper error handling and validation was initially challenging. We had to carefully validate incoming data types and formats to avoid issues during CRUD operations.
+   - Testing the API required multiple iterations, especially in ensuring it was secure and returned the correct HTTP status codes for various operations.
+
+---
+
+Overall, while the project came with its challenges, it also provided valuable lessons in real-world database management, collaboration, and application deployment. These experiences strengthened our problem-solving skills and deepened our understanding of both relational and non-relational database structures.
