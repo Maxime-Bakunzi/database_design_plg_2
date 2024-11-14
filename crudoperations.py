@@ -78,7 +78,11 @@ class EmployeeBase(BaseModel):
 
 
 class EmployeeCreate(EmployeeBase):
-    pass
+    empid: int
+
+
+class EmployeeResponse(EmployeeBase):
+    empid: int
 
 
 class EmployeeDetail(EmployeeBase):
@@ -97,13 +101,41 @@ def get_db():
 # CRUD Operations
 
 
-@app.post("/employees/", response_model=EmployeeDetail)
-def create_employee(employee: EmployeeCreate, db: Session = Depends(get_db)):
-    db_employee = Employee(**employee.dict())
-    db.add(db_employee)
-    db.commit()
-    db.refresh(db_employee)
-    return db_employee
+@app.post("/employees/", response_model=EmployeeResponse)
+async def create_employee(employee: EmployeeCreate, db: Session = Depends(get_db)):
+    try:
+        # Check if employee with the same empid already exists
+        existing_employee = db.query(Employee).filter(
+            Employee.empid == employee.empid).first()
+        if existing_employee:
+            raise HTTPException(
+                status_code=400, detail="Employee with this empid already exists")
+
+        # Create new employee instance
+        db_employee = Employee(
+            empid=employee.empid,
+            firstname=employee.firstname,
+            lastname=employee.lastname,
+            dob=employee.dob,
+            gendercode=employee.gendercode,
+            racedesc=employee.racedesc,
+            maritaldesc=employee.maritaldesc,
+            employeestatus=employee.employeestatus,
+            employeetype=employee.employeetype,
+            currentemployeerating=employee.currentemployeerating
+        )
+
+        db.add(db_employee)
+        db.commit()
+        db.refresh(db_employee)
+        return db_employee
+
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=str(e))
+
+# Create tables
+Base.metadata.create_all(bind=engine)
 
 
 @app.get("/employees/latest", response_model=EmployeeDetail)
